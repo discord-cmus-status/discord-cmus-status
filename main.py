@@ -55,7 +55,8 @@ def parse(cmus_dict):
     return status
 
 
-client_id = "409516139404853248"
+config = config_loader()
+client_id = str(config["id"])
 rpc = rpc.DiscordRPC(client_id)
 rpc.start()
 print("RPC init finished")
@@ -64,7 +65,7 @@ print("cmus connection opened")
 
 signal.signal(signal.SIGINT, signal_handler)
 
-config = config_loader()
+
 
 while True:
     status = cmus.get_status_dict()
