@@ -7,7 +7,7 @@ import sys
 import yaml
 import os
 from pycmus import remote
-from shutil import copyfile
+
 
 def config_loader():
     if not os.path.isfile("config.yaml"):
@@ -69,7 +69,6 @@ cmus = remote.PyCmus()
 print("cmus connection opened")
 
 signal.signal(signal.SIGINT, signal_handler)
-
 
 
 while True:
