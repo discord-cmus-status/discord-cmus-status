@@ -9,13 +9,18 @@ import os
 from pycmus import remote
 from shutil import copyfile
 
-
 def config_loader():
-    if not os.path.isfile('config.yaml'):
-        copyfile('config.yaml.example', 'config.yaml')
-    with open('config.yaml', 'r') as configfile:
+    if not os.path.isfile("config.yaml"):
+        with open("config.yaml", "w") as configfile:
+            default_config = {
+                "start_time": True,
+                "id": 409516139404853248
+            }
+            yaml.safe_dump(default_config, configfile, default_flow_style=False)
+            # copyfile("config.yaml.example", "config.yaml")
+    with open("config.yaml", "r") as configfile:
         config = yaml.safe_load(configfile)
-    print('Config file loaded.')
+    print("Config file loaded.")
     return config
 
 
