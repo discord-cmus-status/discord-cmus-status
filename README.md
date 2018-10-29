@@ -2,7 +2,7 @@
 Discord Rich Presence for the C* Music Player (`cmus`).
 
 ## USAGE
-- Install the requirements (`pip install -r requirements.txt`)
+- Install the requirements (`pip3 install -r requirements.txt`)
 - Open cmus
 - Run `main.py`.
 
