@@ -70,15 +70,16 @@ print("RPC init finished")
 
 signal.signal(signal.SIGINT, signal_handler)
 
+if __name__ == "__main__":
+    while True:
+        try:
+            cmus = remote.PyCmus()
+            print("cmus connection opened")
+        except FileNotFoundError:
+            print("cmus is not running")
+            time.sleep(3)
+            continue
 
-while True:
-    try:
-        cmus = remote.PyCmus()
-        print("cmus connection opened")
         status = cmus.get_status_dict()
         rpc.send_rich_presence(parse(status))
-    except FileNotFoundError:
-        print("cmus is not running")
-        time.sleep(3)
-        continue
-    time.sleep(15)
+        time.sleep(15)
