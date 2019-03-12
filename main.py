@@ -10,15 +10,14 @@ from pycmus import remote
 
 
 def config_loader():
-    if not os.path.isfile("config.yaml"):
-        with open("config.yaml", "w") as configfile:
+    if not os.path.isfile(config_file):
+        with open(config_file, "w") as configfile:
             default_config = {
                 "start_time": True,
                 "id": 409516139404853248
             }
             yaml.safe_dump(default_config, configfile, default_flow_style=False)
-            # copyfile("config.yaml.example", "config.yaml")
-    with open("config.yaml", "r") as configfile:
+    with open(config_file, "r") as configfile:
         config = yaml.safe_load(configfile)
     print("Config file loaded.")
     return config
@@ -60,18 +59,27 @@ def parse(cmus_dict):
     return status
 
 
+script_dir = os.path.dirname(os.path.realpath(__file__))  # Set the location of the script
+config_file = os.path.join(script_dir, "config.yaml")
+
 config = config_loader()
 client_id = str(config["id"])
 rpc = rpc.DiscordRPC(client_id)
 rpc.start()
 print("RPC init finished")
-cmus = remote.PyCmus()
-print("cmus connection opened")
 
 signal.signal(signal.SIGINT, signal_handler)
 
+if __name__ == "__main__":
+    while True:
+        try:
+            cmus = remote.PyCmus()
+            print("cmus connection opened")
+        except FileNotFoundError:
+            print("cmus is not running")
+            time.sleep(3)
+            continue
 
-while True:
-    status = cmus.get_status_dict()
-    rpc.send_rich_presence(parse(status))
-    time.sleep(15)
+        status = cmus.get_status_dict()
+        rpc.send_rich_presence(parse(status))
+        time.sleep(15)
